@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kroger Kompare</title>
+    <script>
+        // Function to change the plot when a button is clicked
+        function changePlot(plotUrl) {
+            document.getElementById("plot-img").src = plotUrl + '?rand=' + Math.random();
+        }
+
+        // Function to call a Python function via AJAX
+        function updateDatabase() {
+            fetch('/call-function', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+    <h1>Kroger Kompare</h1>
+    <p>Currently supports Milk and Cheese prices from the Loveland Kroger location. (Dummy data is also used)</p>
+    <!-- Image where the plot will be displayed -->
+    <img id="plot-img" src="{{ url_for('plot1_png') }}" alt="Graph" width="500px">
+
+    <!-- Buttons to change the plot -->
+    <br><br>
+    <button onclick="changePlot('{{ url_for('plot1_png') }}')">Milk Plot</button>
+    <button onclick="changePlot('{{ url_for('plot2_png') }}')">Cheese Plot</button>
+
+    <!-- Button to update database -->
+    <br><br>
+    <button onclick="updateDatabase()">Update Database</button>
+</body>
+</html>
